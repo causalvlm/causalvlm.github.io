@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f5ef">
+  <meta name="description" content="Causal-VLM learns observed prerequisite relationships between events in long videos. Explore the NeurIPS 2026 paper, DCC benchmark, model weights, and code.">
+  <meta property="og:title" content="Causal-VLM: Dense Causal Captioning in Videos">
+  <meta property="og:description" content="Temporally grounded captions and causal graphs for long-form video. NeurIPS 2026.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://causalvlm.github.io/">
+  <meta property="og:image" content="https://causalvlm.github.io/assets/figures/motivation.webp">
+  <link rel="canonical" href="https://causalvlm.github.io/">
+  <title>Causal-VLM · Dense Causal Captioning in Videos</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="styles.css?v=10">
+  <script src="motion.js?v=10" defer></script>
+  <script src="event-data.js?v=10" defer></script>
+  <script src="app.js?v=10" defer></script>
+  <script src="event-sequence.js?v=10" defer></script>
+  <script src="event-studio.js?v=10" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <a class="wordmark" href="#top" aria-label="Causal-VLM home"><svg viewBox="0 0 36 30" aria-hidden="true"><path d="M6 7h8l10 16h6M6 23h8L24 7h6"/><circle cx="6" cy="7" r="3"/><circle cx="6" cy="23" r="3"/><circle cx="30" cy="7" r="3"/><circle cx="30" cy="23" r="3"/></svg>Causal-VLM</a>
+  <button class="menu-toggle" aria-expanded="false" aria-controls="navigation">Menu <span aria-hidden="true">+</span></button>
+  <nav id="navigation" aria-label="Main navigation">
+    <a href="#examples">Try it</a><a href="#overview">Overview</a><a href="#method">Method</a><a href="#dcc">DCC</a><a href="#results">Results</a><a href="#resources">Resources</a>
+  </nav>
+</header>
+<main id="main">
+<section class="hero section-wrap" id="top" aria-labelledby="paper-title">
+  <div class="hero-copy">
+    <div class="eyebrow"><span class="status-dot"></span> <span>NeurIPS 2026</span></div>
+    <h1 id="paper-title">Causal<span class="title-link">-</span>VLM<span class="title-period">.</span></h1>
+    <p class="paper-subtitle">Dense Causal Captioning<br>in Videos</p>
+    <p class="hero-summary">Understanding how events unfold<br class="desktop-only"> and <em>how they enable one another.</em></p>
+    <div class="primary-links" aria-label="Research resources">
+      <a class="button button-dark" href="assets/paper/Causal-VLM.pdf" target="_blank" rel="noopener">Paper <span aria-hidden="true">↗</span></a>
+      <a class="button" href="https://github.com/causalvlm/CausalVLM" target="_blank" rel="noopener" aria-label="Causal-VLM and DCC code on GitHub">Code <span aria-hidden="true">↗</span></a>
+      <a class="button" href="https://huggingface.co/causalvlm/CausalVLM" target="_blank" rel="noopener">Model <span aria-hidden="true">↗</span></a>
+      <a class="button" href="https://huggingface.co/datasets/causalvlm/DCC" target="_blank" rel="noopener">Dataset <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+  <div class="causal-study" id="intro-example" role="region" aria-labelledby="intro-title">
+    <div class="focus-heading">
+      <div class="focus-topline"><span class="focus-kicker">FRIED CHICKEN</span><button type="button" id="motion-toggle" class="motion-toggle" aria-pressed="false" hidden><svg viewBox="0 0 16 16" aria-hidden="true"><path class="motion-pause-icon" d="M5 3v10M11 3v10"/><path class="motion-play-icon" d="M5 3l8 5-8 5z"/></svg><span>Pause motion</span></button></div>
+      <h2 id="intro-title">Two preparations.<br> One next step.</h2>
+      <p id="focus-help">Tap a step to see its connections.</p>
+    </div>
+    <div class="focus-graph" role="group" aria-label="Two preparations enable coating the chicken" aria-describedby="focus-help">
+      <svg class="focus-wires" aria-hidden="true" focusable="false"><defs><marker id="focus-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L9 5L1 9Z" fill="#356b50"/></marker></defs><g></g></svg>
+      <button type="button" class="focus-event focus-preparation" data-event="4" aria-label="Season the chicken: see its connection" aria-pressed="false" aria-controls="focus-caption">
+        <span class="focus-meta">1:00–1:29</span>
+        <img src="assets/images/events/chicken-4.webp" alt="" width="689" height="388">
+        <span class="focus-name">Season the chicken</span>
+      </button>
+      <button type="button" class="focus-event focus-preparation" data-event="5" aria-label="Season the flour: see its connection" aria-pressed="false" aria-controls="focus-caption">
+        <span class="focus-meta">1:33–1:43</span>
+        <img src="assets/images/events/chicken-5.webp" alt="" width="689" height="388">
+        <span class="focus-name">Season the flour</span>
+      </button>
+      <button type="button" class="focus-event focus-outcome" data-event="6" aria-label="Coat the chicken: see both preparations" aria-pressed="true" aria-controls="focus-caption">
+        <span class="focus-meta">1:48–2:09</span>
+        <img src="assets/images/events/chicken-6.webp" alt="" width="689" height="388">
+        <span class="focus-name">Coat the chicken</span>
+      </button>
+    </div>
+    <div class="focus-caption" id="focus-caption" role="status" aria-live="polite" aria-atomic="true">
+      <strong id="focus-route">Both preparations lead here.</strong>
+      <p id="focus-explanation">The seasoned chicken and seasoned flour come together in the coating step.</p>
+    </div>
+    <p class="focus-takeaway">A clearer edit keeps the context.</p>
+  </div>
+  <a href="#examples" class="explore-all" id="explore-all">Try editing all 8 events <span aria-hidden="true">↓</span></a>
+  <div class="author-block">
+    <p class="authors"><a href="mailto:asmar.nadeem@surrey.ac.uk">Asmar Nadeem<sup>1</sup></a><span>Mahrukh Awan<sup>1</sup></span><span>Muhammad Awais<sup>1</sup></span><span>Robert Dawes<sup>2</sup></span><span>Adrian Hilton<sup>1</sup></span><span>Armin Mustafa<sup>1</sup></span></p>
+    <p class="affiliations"><span><sup>1</sup> CVSSP, University of Surrey</span><span><sup>2</sup> BBC Research and Development</span></p>
+  </div>
+</section>
+<section class="story-section section-wrap" id="playground" aria-labelledby="story-title">
+  <div class="story-heading"><div><div class="eyebrow">TRY IT YOURSELF</div><h2 id="story-title">Every event. <em>A story you can shape.</em></h2></div><p>Pick a moment to see its connections.<br>Turn those connections into your own video edit.</p></div>
+  <div class="story-workspace" id="examples">
+    <div class="story-toolbar">
+      <div class="story-current-video">
+        <img id="story-current-image" src="assets/images/events/running-6.webp" alt="" width="80" height="52">
+        <div><strong id="story-current-name">Beach &amp; city run</strong><span id="story-current-pattern">One journey, connections across time</span></div>
+      </div>
+      <button type="button" class="story-browse" id="story-browse" aria-expanded="false" aria-controls="story-library">Browse videos <span id="story-library-count">9 examples</span><span class="browse-chevron" aria-hidden="true">⌄</span></button>
+    </div>
+    <div class="story-library" id="story-library" hidden>
+      <p>Choose a video. Explore its events, then shape your edit.</p>
+      <div class="story-category-tabs" role="tablist" aria-label="Video category">
+        <button type="button" role="tab" id="story-category-activity" data-story-category="activity" aria-selected="true" aria-controls="story-video-options" tabindex="0">Activities <span>5</span></button>
+        <button type="button" role="tab" id="story-category-cooking" data-story-category="cooking" aria-selected="false" aria-controls="story-video-options" tabindex="-1">Cooking <span>4</span></button>
+      </div>
+      <div class="story-video-options" id="story-video-options" role="tabpanel" aria-labelledby="story-category-activity" data-category="activity"></div>
+    </div>
+    <div id="story-content" role="region" aria-labelledby="story-current-name">
+      <div class="story-main">
+        <div class="story-map-column">
+          <div class="map-heading"><h3>All <span id="story-event-count">8</span> events</h3><span id="story-map-help">Check / uncheck to edit</span></div>
+          <div class="story-map" id="story-map" aria-label="All video events" aria-describedby="story-map-help"></div>
+          <div class="relation-legend" aria-label="Relationship colours"><span class="legend-before">Leads in</span><span class="legend-selected">Selected</span><span class="legend-after">Leads on</span></div>
+          <div class="story-relations" id="story-relations" aria-live="polite" aria-atomic="true"></div>
+        </div>
+        <div class="story-preview-column">
+          <div class="map-heading"><h3>Your preview</h3><span id="story-preview-count">3 moments</span></div>
+          <div class="story-player" id="story-player">
+            <video id="story-video" playsinline muted preload="metadata" poster="assets/images/events/running-7.webp" aria-label="Selected video moment"></video>
+            <span class="playing-badge" id="story-playing-label">E7 · Leave the stone at the hilltop</span>
+            <button type="button" class="player-overlay" id="story-overlay" aria-label="Play your edit"><span aria-hidden="true">▶</span></button>
+          </div>
+          <div class="story-transport">
+            <button type="button" id="story-play" class="play-edit"><span aria-hidden="true">▶</span> Play edit</button>
+            <div class="transport-progress"><span id="story-playback-status">Ready to play</span><progress id="story-progress" max="1" value="0" aria-label="Edit playback progress"></progress></div>
+          </div>
+          <div class="story-presets" role="group" aria-label="Choose a starting point">
+            <button type="button" data-story-mode="highlights" aria-pressed="true"><span aria-hidden="true">✦</span><strong>Highlights</strong><span>Key moments</span></button>
+            <button type="button" data-story-mode="narrative" aria-pressed="false"><span aria-hidden="true">≋</span><strong>Narrative</strong><span>The full story</span></button>
+            <button type="button" data-story-mode="custom" aria-pressed="false"><span aria-hidden="true">＋</span><strong>Your story</strong><span>You choose</span></button>
+          </div>
+          <p class="story-mode-description" id="story-mode-description">A short cut around the most connected moment.</p>
+          <div class="selected-moment-controls">
+            <div><span class="control-label">SELECTED MOMENT</span><strong id="story-selected-title">E7 · Leave the stone at the hilltop</strong></div>
+            <button type="button" id="story-include" aria-pressed="true">✓ In your edit</button>
+          </div>
+          <div class="context-action"><p id="story-context-note"></p><button type="button" id="story-context" class="text-control">Include context <span aria-hidden="true">↗</span></button></div>
+        </div>
+      </div>
+      <div class="story-edit">
+        <p class="story-session-note">Your edits stay in this tab. Refresh to start fresh.</p>
+        <div class="edit-heading"><div><h3>Your sequence <span id="story-duration"></span></h3><p id="story-sequence-help">Select a moment below to move it or edit its caption.</p></div><div class="edit-history"><button type="button" id="story-undo" class="text-control" disabled>Undo</button><button type="button" id="story-reset" class="text-control">Reset edit <span aria-hidden="true">↺</span></button></div></div>
+        <ol id="story-sequence" class="story-sequence" aria-label="Moments in your video edit"></ol>
+        <div class="sequence-actions"><div class="sequence-move"><button type="button" id="story-earlier" aria-label="Move selected moment earlier">← Earlier</button><button type="button" id="story-later" aria-label="Move selected moment later">Later →</button></div><button type="button" id="story-caption-toggle" aria-expanded="false" aria-controls="story-caption-editor" class="text-control">Edit caption</button></div>
+        <div id="story-caption-editor" class="story-caption-editor" hidden><label for="story-caption">Caption for the selected moment</label><textarea id="story-caption" rows="2" maxlength="240"></textarea><p>Your words appear with this moment in the preview.</p></div>
+        <details id="story-narrative" class="story-narrative"><summary>Read your narrative <span aria-hidden="true">+</span></summary><p id="story-narrative-text"></p></details>
+        <p class="story-feedback" id="story-feedback" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+    <p class="story-demo-note">An interactive application of the paper’s annotated event graphs. Previews combine short, silent excerpts from the original videos; captions follow the selected events.</p>
+  </div>
+  <noscript><p>Enable JavaScript to explore the event relationships and build a video edit. The paper’s full event graph is shown below.</p></noscript>
+</section>
+
+<section class="overview section-wrap section-space" id="overview" aria-labelledby="overview-title">
+  <div class="section-label"><span>01</span> THE IDEA</div>
+  <div class="section-intro"><h2 id="overview-title">Events have a timeline.<br>They also have <em>dependencies.</em></h2><div><p>Long videos contain parallel preparations, converging actions, and dependencies that span many events. Dense causal captioning connects temporally grounded descriptions with a graph of the observed prerequisites.</p><p class="muted">An edge means that one event enables another within the video as filmed. The labels describe observational structure, rather than establish counterfactual necessity.</p></div></div>
+  <figure class="paper-figure">
+    <button type="button" class="figure-open" aria-label="Expand motivation figure" aria-haspopup="dialog"><img src="assets/figures/motivation.webp" alt="Eight events in making fried chicken, with two preparation chains converging at coating and a sparse causal adjacency matrix" width="2400" height="765" loading="lazy"></button>
+    <figcaption><span class="figure-number">FIGURE 1</span><p>Eight events. Seven causal links. Coating the chicken requires both chicken preparation and flour preparation. The full graph contains only seven causal pairs among 28 possible pairs.</p></figcaption>
+  </figure>
+  <details class="abstract"><summary>Abstract <span aria-hidden="true">+</span></summary><p>Dense video captioning describes multiple events in long videos. However, each event is predicted independently, ignoring the causal relationships with the other events in the video. These causal relationships denote observed prerequisite dependencies and are important for human-like descriptions of long videos. Our experiments show that existing vision-language models fail at predicting causal relationships in long-form videos. We address this through two contributions. First, we create a benchmark dataset with 21.6K videos and 85K events by using a large language model to generate annotations from dense captions in YouCook2 and ActivityNet. We validate this benchmark dataset through multimodal alignment, vision-language models, and human judgment. Second, we propose a novel architecture for dense causal captioning that not only generates captions but also learns causal relationships. This novel architecture not only predicts causality effectively (0.73 F1 ActivityNet, 0.64 F1 YouCook2) but also improves the vision-language model’s core capabilities: caption quality increases by +6.3 CIDEr on ActivityNet and +7.3 on YouCook2, while temporal grounding becomes accurate as causal predictions force precise event localization.</p></details>
+</section>
+<section class="video-section section-space" id="videos" aria-labelledby="video-title">
+  <div class="section-wrap">
+    <div class="section-label"><span>02</span> VIDEO WALKTHROUGHS</div>
+    <div class="video-heading"><h2 id="video-title">Follow the events.<br><em>Watch the connections.</em></h2><p>Event dependencies in surfing and cooking.</p></div>
+    <div class="video-grid">
+      <figure class="video-card"><div class="video-frame"><video controls controlslist="nodownload" playsinline tabindex="0" preload="none" poster="assets/images/waves-poster.webp" aria-label="Breaking waves: event and causal relationship demonstration"><source src="assets/videos/breaking-waves.webm" type="video/webm"><source src="assets/videos/breaking-waves.mp4" type="video/mp4">Your browser does not support embedded video. <a href="assets/videos/breaking-waves.mp4">Open video</a>.</video></div><figcaption><span class="mono">01 / BREAKING WAVES</span><h3>A sequence of consequences</h3><p>Events unfold as powerful waves reach the surfers.</p></figcaption></figure>
+      <figure class="video-card"><div class="video-frame"><video controls controlslist="nodownload" playsinline tabindex="0" preload="none" poster="assets/images/onion-poster.webp" aria-label="Onion rings: cooking event and causal relationship demonstration"><source src="assets/videos/onion-rings.webm" type="video/webm"><source src="assets/videos/onion-rings.mp4" type="video/mp4">Your browser does not support embedded video. <a href="assets/videos/onion-rings.mp4">Open video</a>.</video></div><figcaption><span class="mono">02 / ONION RINGS</span><h3>Preparations that come together</h3><p>Preparing ingredients and heating oil enable later cooking steps.</p></figcaption></figure>
+    </div>
+    <details class="video-transcript"><summary>Video descriptions <span aria-hidden="true">+</span></summary><p><strong>Breaking waves:</strong> The demonstration highlights five events in sequence: powerful waves roll in, a surfer is swallowed by a wave, two surfers are knocked down, a wave crashes in, and a surfer is thrown off a board. The on-screen connections illustrate the relationships between the events.</p><p><strong>Onion rings:</strong> The demonstration highlights peeling onions, making batter, heating oil, coating rings, deep-frying, and plating and serving. Ingredient preparation and oil preparation contribute to the later cooking steps.</p></details>
+  </div>
+</section>
+<section class="section-wrap section-space" id="method" aria-labelledby="method-title">
+  <div class="section-label"><span>03</span> THE MODEL</div>
+  <div class="section-intro"><h2 id="method-title">Learn the events.<br>Then learn <em>what connects them.</em></h2><p>Causal-VLM takes a raw video and produces event captions, timestamps, and a causal adjacency matrix. A curriculum-trained captioner supplies the visual and language representations for a multimodal causal head.</p></div>
+  <div class="method-steps"><article><span class="step-number">01</span><h3>Dense video captioning</h3><p>Scene-aware frame sampling and staged training produce temporally grounded event descriptions.</p></article><span class="step-connector" aria-hidden="true"><svg class="direction-arrow" viewBox="0 0 44 20"><path class="direction-track" d="M2 10H39M32 3L39 10L32 17"/><path class="direction-flow" pathLength="100" d="M2 10H39"/></svg></span><article><span class="step-number">02</span><h3>Multimodal causal prediction</h3><p>A causal head fuses event-level visual and text features to predict forward relationships between events.</p></article></div>
+  <figure class="paper-figure"><button type="button" class="figure-open" aria-label="Expand architecture figure" aria-haspopup="dialog"><img src="assets/figures/architecture.webp" alt="Causal-VLM architecture: curriculum-trained video captioner followed by event feature fusion and a causal adjacency prediction head" width="2400" height="1224" loading="lazy"></button><figcaption><span class="figure-number">ARCHITECTURE</span><p>The two-stage Causal-VLM architecture, including the multimodal causal head and the objectives used for causal learning.</p></figcaption></figure>
+</section>
+<section class="dcc-section section-space" id="dcc" aria-labelledby="dcc-title">
+  <div class="section-wrap"><div class="section-label"><span>04</span> THE BENCHMARK</div><div class="section-intro"><h2 id="dcc-title">DCC.<br><em>Dense Causal Captions.</em></h2><div><p>Dense captions and timestamps meet a full pairwise causal graph. DCC extends ActivityNet and YouCook2 with observed prerequisite relationships across the events in each video.</p></div></div>
+  <div class="dataset-stats"><div><strong>21.6<span>K</span></strong><p>videos</p></div><div><strong>85<span>K</span></strong><p>temporally grounded events</p></div><div><strong>2</strong><p>source video datasets</p></div></div>
+  <figure class="paper-figure"><button type="button" class="figure-open" aria-label="Expand DCC pipeline figure" aria-haspopup="dialog"><img src="assets/figures/benchmark.webp" alt="DCC construction pipeline: human event captions, LLM causal annotation, multimodal validation, and human verification" width="2400" height="674" loading="lazy"></button><figcaption><span class="figure-number">DCC PIPELINE</span><p>LLM-generated annotations are checked against video through multimodal alignment, VLM verification, and human judgment.</p></figcaption></figure>
+  </div>
+</section>
+<section class="section-wrap section-space" id="results" aria-labelledby="results-title">
+  <div class="section-label"><span>05</span> RESULTS</div><div class="section-intro"><h2 id="results-title">Causal supervision<br>improves <em>video understanding.</em></h2><p>The full model predicts causal links while improving caption quality and temporal localization.</p></div>
+  <div class="results-panel">
+    <div class="results-toolbar"><h3>Causal prediction</h3><div class="dataset-tabs" role="tablist" aria-label="Results dataset"><button id="tab-activitynet" role="tab" aria-selected="true" aria-controls="result-chart" data-dataset="activitynet" tabindex="0">ActivityNet</button><button id="tab-youcook2" role="tab" aria-selected="false" aria-controls="result-chart" data-dataset="youcook2" tabindex="-1">YouCook2</button></div></div>
+    <div class="results-body"><div class="bar-chart" id="result-chart" role="tabpanel" aria-labelledby="tab-activitynet"><div class="chart-axis"><span>F1 score</span><span>0.0</span><span>1.0</span></div><div class="chart-rows" id="chart-rows"></div></div><div class="result-highlight" aria-live="polite"><span class="mono" id="result-dataset">ACTIVITYNET</span><strong id="result-f1">0.73</strong><span class="result-label">causal F1</span><div class="caption-gain"><strong id="result-gain">+6.3</strong><span>CIDEr over Stage 1</span></div></div></div>
+    <p class="results-note">FT: fine-tuned on DCC. The Llama baseline predicts only the graph from Stage-1 captions. Causal-VLM results are means of three seeds (±0.010 F1).</p>
+  </div>
+  <figure class="paper-figure qualitative"><button type="button" class="figure-open" aria-label="Expand qualitative results figure" aria-haspopup="dialog"><img src="assets/figures/qualitative.webp" alt="Qualitative comparisons with PLM and InternVL across camera falling, a linear causal chain, and parallel cooking preparations" width="2400" height="952" loading="lazy"></button><figcaption><span class="figure-number">QUALITATIVE RESULTS</span><p>Predicted event roles and causal relationships, including parallel chains that converge on a shared effect.</p></figcaption></figure>
+</section>
+<section class="resources-section section-space" id="resources" aria-labelledby="resources-title"><div class="section-wrap">
+  <div class="section-label"><span>06</span> RESOURCES</div><div class="resources-heading"><h2 id="resources-title">Explore the work.<br><em>Build on the connections.</em></h2></div>
+  <div class="resource-grid">
+    <a class="resource-card" href="assets/paper/Causal-VLM.pdf" target="_blank" rel="noopener"><span class="resource-top mono">01 / PAPER <span aria-hidden="true">↗</span></span><h3>Read the paper</h3><p>The complete paper and supplementary material.</p><span class="resource-bottom">PDF</span></a>
+    <a class="resource-card" href="https://huggingface.co/causalvlm/CausalVLM" target="_blank" rel="noopener"><span class="resource-top mono">02 / MODEL <span aria-hidden="true">↗</span></span><h3>Causal-VLM weights</h3><p>The published model checkpoint for video inference.</p><span class="resource-bottom">Hugging Face</span></a>
+    <a class="resource-card" href="https://huggingface.co/datasets/causalvlm/DCC" target="_blank" rel="noopener"><span class="resource-top mono">03 / DATA <span aria-hidden="true">↗</span></span><h3>DCC annotations</h3><p>Event captions, temporal intervals, and causal relationships.</p><span class="resource-bottom">Hugging Face Datasets</span></a>
+    <a class="resource-card" id="code" href="https://github.com/causalvlm/CausalVLM" target="_blank" rel="noopener"><span class="resource-top mono">04 / CODE <span aria-hidden="true">↗</span></span><h3>Causal-VLM and DCC</h3><p>Code and usage guides.</p><span class="resource-bottom">GitHub</span></a>
+  </div>
+  <div class="citation-block" id="citation"><div><span class="section-label">CITATION</span><h3>Cite Causal-VLM</h3></div><div class="citation-code"><button id="copy-citation" class="copy-button">Copy BibTeX</button><pre><code id="bibtex">@inproceedings{nadeem2026causalvlm,
+  title     = {Causal-VLM: Dense Causal Captioning in Videos},
+  author    = {Nadeem, Asmar and Awan, Mahrukh and Awais, Muhammad
+               and Dawes, Robert and Hilton, Adrian and Mustafa, Armin},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year      = {2026}
+}</code></pre><span id="copy-status" class="sr-only" aria-live="polite"></span></div></div>
+</div></section>
+</main>
+<footer class="section-wrap site-footer"><a class="wordmark" href="#top">Causal-VLM<span aria-hidden="true">↗</span></a><p>CVSSP, University of Surrey<br>BBC Research and Development</p><a href="mailto:asmar.nadeem@surrey.ac.uk">Contact the authors <span aria-hidden="true">↗</span></a><span>NeurIPS 2026</span></footer>
+<dialog class="figure-dialog" aria-labelledby="figure-dialog-title">
+  <div class="figure-toolbar"><h3 id="figure-dialog-title">Paper figure</h3><div><button type="button" id="figure-zoom" aria-pressed="false">Zoom in</button><button type="button" id="figure-close" autofocus>Close ×</button></div></div>
+  <div class="figure-viewport" tabindex="0" aria-label="Figure image; scroll to explore when zoomed"><img id="figure-detail" alt=""></div>
+</dialog>
+<noscript><p class="noscript-note">Switching examples and events requires JavaScript. The complete examples are also shown in the paper figures below. All research resources and videos remain available.</p></noscript>
+</body>
+</html>
